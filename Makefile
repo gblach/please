@@ -1,25 +1,26 @@
 BIN=please
-OBJ=${BIN}.o
+OBJ=${BIN}.o pam.o
 
 CC?=cc
 CFLAGS?=-O2 -march=native
-CFLAGS+=-std=c99
 LDFLAGS?=
+LIBS=-lpam
 PREFIX=/usr/local
 
 
 ${BIN}: ${OBJ}
-	${CC} ${LDFLAGS} -o $@ ${OBJ}
+	${CC} ${LDFLAGS} ${LIBS} -o $@ ${OBJ}
 
 .c.o:
-	${CC} -c ${CFLAGS} -o $@ $<
+	${CC} -c -std=c99 ${CFLAGS} -o $@ $<
 
-install:
+install: ${BIN}
 	install -d ${PREFIX}/bin
 	install -m 6755 -s ${BIN} ${PREFIX}/bin
 
 clean:
-	rm -f ${BIN} ${OBJ}
+	rm -f ${BIN} *.o
 
 
-please.o: please.c
+please.o: please.c pam.h
+pam.o: pam.c pam.h

@@ -1,7 +1,10 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
 #include <sys/types.h>
 #include <grp.h>
+#include "pam.h"
 
 #define GROUPS 100
 
@@ -36,6 +39,11 @@ int main(int ac, char **av)
     if(! in_wheel()) {
         fprintf(stderr, "You aren't in `%s` group\n", wheel_name());
         return 1;
+    }
+
+    if(1 != getuid() && ! check_password()) {
+        fprintf(stderr, "Authenticaton failure\n");
+        return 2;
     }
 
     execvp(av[0], av);

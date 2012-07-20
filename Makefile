@@ -1,8 +1,7 @@
 BIN=please
 OBJ=${BIN}.o
 
-CC?=cc -c
-LD?=cc
+CC?=cc
 CFLAGS?=-O2 -march=native
 CFLAGS+=-std=c99
 LDFLAGS?=
@@ -10,10 +9,10 @@ PREFIX=/usr/local
 
 
 ${BIN}: ${OBJ}
-	${LD} ${LDFLAGS} -o $@ ${OBJ}
+	${CC} ${LDFLAGS} -o $@ ${OBJ}
 
 .c.o:
-	${CC} ${CFLAGS} -o $@ $<
+	${CC} -c ${CFLAGS} -o $@ $<
 
 install:
 	install -d ${PREFIX}/bin

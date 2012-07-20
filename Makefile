@@ -15,7 +15,8 @@ ${BIN}: ${OBJ}
 	${CC} ${CFLAGS} -o $@ $<
 
 install:
-	install -D -s -m 6755 ${BIN} ${PREFIX}/bin/${BIN}
+	install -d ${PREFIX}/bin
+	install -m 6755 -s ${BIN} ${PREFIX}/bin
 
 clean:
 	rm -f ${BIN} ${OBJ}

@@ -1,9 +1,10 @@
 BIN=please
 OBJ=${BIN}.o
 
-CC=gcc -c -std=c99
-LD=gcc
+CC?=cc -c
+LD?=cc
 CFLAGS?=-O2 -march=native
+CFLAGS+=-std=c99
 LDFLAGS?=
 PREFIX=/usr/local
 

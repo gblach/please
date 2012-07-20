@@ -41,7 +41,7 @@ int main(int ac, char **av)
         return 1;
     }
 
-    if(1 != getuid() && ! check_password()) {
+    if(0 != getuid() && ! check_password()) {
         fprintf(stderr, "Authenticaton failure\n");
         return 2;
     }

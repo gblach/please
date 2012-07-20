@@ -6,7 +6,7 @@
 #define GROUPS 100
 
 
-char* wheel_name()
+char *wheel_name()
 {
     struct group *gr = getgrgid(0);
     return gr->gr_name;
@@ -14,7 +14,7 @@ char* wheel_name()
 
 int in_wheel()
 {
-    int groups[GROUPS];
+    gid_t groups[GROUPS];
     int size = getgroups(GROUPS, groups);
 
     for(int i = 0; i < size; i++) {

@@ -17,6 +17,8 @@ ${BIN}: ${OBJ}
 install: ${BIN}
 	install -d ${PREFIX}/bin
 	install -m 6755 -s ${BIN} ${PREFIX}/bin
+	install -d ${PREFIX}/etc/pam.d
+	install -m 0644 ${BIN}.pam ${PREFIX}/etc/pam.d/${BIN}
 
 clean:
 	rm -f ${BIN} *.o

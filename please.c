@@ -3,28 +3,39 @@
 #include <string.h>
 #include <unistd.h>
 #include <sys/types.h>
-#include <grp.h>
-#include "pam.h"
+#include <security/pam_appl.h>
 
-#define GROUPS 100
+#ifdef __FREEBSD__
+# include <security/openpam.h>
+#endif
 
+#ifndef MAXHOSTNAMELEN
+# define MAXHOSTNAMELEN 256
+#endif
+ 
 
-char *wheel_name()
+int check_password()
 {
-    struct group *gr = getgrgid(0);
-    return gr->gr_name;
-}
+    struct pam_conv pamc;
+    pam_handle_t *pamh = NULL;
+    int retval;
+    char hostname[MAXHOSTNAMELEN];
+    const char *tty;
 
-int in_wheel()
-{
-    gid_t groups[GROUPS];
-    int size = getgroups(GROUPS, groups);
+#ifdef __FREEBSD__
+    pamc = { &openpam_ttyconv, NULL };
+#endif
 
-    for(int i = 0; i < size; i++) {
-        if(groups[i] == 0) return 1;
-    }
+    gethostname(hostname, sizeof(hostname));
+    tty = ttyname(STDERR_FILENO);
 
-    return 0;
+    pam_start("please", getlogin(), &pamc, &pamh);
+    pam_set_item(pamh, PAM_RHOST, hostname);
+    pam_set_item(pamh, PAM_RUSER, getlogin());
+    pam_set_item(pamh, PAM_TTY, tty);
+    retval = pam_authenticate(pamh, 0);
+
+    return retval == PAM_SUCCESS;
 }
 
 int main(int ac, char **av)
@@ -36,12 +47,7 @@ int main(int ac, char **av)
         return 0;
     }
 
-    if(! in_wheel()) {
-        fprintf(stderr, "You aren't in `%s` group\n", wheel_name());
-        return 1;
-    }
-
-    if(0 != getuid() && ! check_password()) {
+    if(! check_password()) {
         fprintf(stderr, "Authenticaton failure\n");
         return 2;
     }

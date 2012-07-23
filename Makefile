@@ -1,5 +1,5 @@
 BIN=please
-OBJ=${BIN}.o pam.o
+OBJ=${BIN}.o
 
 CC?=cc
 CFLAGS?=-O2 -march=native
@@ -12,17 +12,14 @@ ${BIN}: ${OBJ}
 	${CC} ${LDFLAGS} ${LIBS} -o $@ ${OBJ}
 
 .c.o:
-	${CC} -c -std=c99 ${CFLAGS} -o $@ $<
+	${CC} -c ${CFLAGS} -o $@ $<
 
 install: ${BIN}
 	install -d ${PREFIX}/bin
 	install -m 6755 -s ${BIN} ${PREFIX}/bin
-	install -d ${PREFIX}/etc/pam.d
-	install -m 0644 ${BIN}.pam ${PREFIX}/etc/pam.d/${BIN}
 
 clean:
 	rm -f ${BIN} *.o
 
 
-please.o: please.c pam.h
-pam.o: pam.c pam.h
+please.o: please.c

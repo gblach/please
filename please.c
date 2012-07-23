@@ -3,13 +3,11 @@
 #include <security/pam_appl.h>
 
 #if defined(__FreeBSD__)
+# include <sys/param.h>
 # include <security/openpam.h>
 #elif defined(__linux__)
+# include <asm/param.h>
 # include <security/pam_misc.h>
-#endif
-
-#ifndef MAXHOSTNAMELEN
-# define MAXHOSTNAMELEN 256
 #endif
  
 

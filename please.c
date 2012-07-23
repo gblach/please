@@ -5,8 +5,10 @@
 #include <sys/types.h>
 #include <security/pam_appl.h>
 
-#ifdef __FREEBSD__
+#if defined(__FreeBSD__)
 # include <security/openpam.h>
+#elif defined(__linux__)
+# include <security/pam_misc.h>
 #endif
 
 #ifndef MAXHOSTNAMELEN
@@ -22,9 +24,12 @@ int check_password()
     char hostname[MAXHOSTNAMELEN];
     const char *tty;
 
-#ifdef __FREEBSD__
-    pamc = { &openpam_ttyconv, NULL };
+#if defined(__FreeBSD__)
+    pamc.conv = &openpam_ttyconv;
+#elif defined(__linux__)
+    pamc.conv = &misc_conv;
 #endif
+    pamc.appdata_ptr = NULL;
 
     gethostname(hostname, sizeof(hostname));
     tty = ttyname(STDERR_FILENO);

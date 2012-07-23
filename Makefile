@@ -4,7 +4,7 @@ OBJ=${BIN}.o
 CC?=cc
 CFLAGS?=-O2 -march=native
 LDFLAGS?=
-LIBS=-lpam
+LIBS=-lpam $(shell if [ `uname` = Linux ]; then echo -lpam_misc; fi)
 PREFIX=/usr/local
 
 

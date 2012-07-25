@@ -9,7 +9,7 @@ PREFIX=/usr/local
 
 
 ${BIN}: ${OBJ}
-	${CC} ${LDFLAGS} ${LIBS} -o $@ ${OBJ}
+	${CC} ${LDFLAGS} -o $@ ${OBJ} ${LIBS}
 
 .c.o:
 	${CC} -c ${CFLAGS} -o $@ $<

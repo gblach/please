@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #include <unistd.h>
 #include <security/pam_appl.h>
 
@@ -11,29 +12,37 @@
 #endif
  
 
-int check_password()
+char *get_hostname()
 {
-    struct pam_conv pamc;
+    char hostname[MAXHOSTNAMELEN];
+    gethostname(hostname, sizeof(hostname));
+    return strdup(hostname);
+}
+
+char *get_ttyname()
+{
+    char *tty;
+    tty = ttyname(STDERR_FILENO);
+    if(! tty) tty = "tty";
+    return tty;
+}
+
+int authenticate()
+{
+#if defined(__FreeBSD__)
+    struct pam_conv pamc = { &openpam_ttyconv, NULL };
+#elif defined(__linux__)
+    struct pam_conv pamc = { &misc_conv, NULL };
+#endif
     pam_handle_t *pamh = NULL;
     int retval;
-    char hostname[MAXHOSTNAMELEN];
-    const char *tty;
-
-#if defined(__FreeBSD__)
-    pamc.conv = &openpam_ttyconv;
-#elif defined(__linux__)
-    pamc.conv = &misc_conv;
-#endif
-    pamc.appdata_ptr = NULL;
-
-    gethostname(hostname, sizeof(hostname));
-    tty = ttyname(STDERR_FILENO);
 
     pam_start("please", getlogin(), &pamc, &pamh);
-    pam_set_item(pamh, PAM_RHOST, hostname);
+    pam_set_item(pamh, PAM_RHOST, get_hostname());
     pam_set_item(pamh, PAM_RUSER, getlogin());
-    pam_set_item(pamh, PAM_TTY, tty);
+    pam_set_item(pamh, PAM_TTY, get_ttyname());
     retval = pam_authenticate(pamh, 0);
+    pam_end(pamh, retval);
 
     return retval == PAM_SUCCESS;
 }
@@ -47,9 +56,9 @@ int main(int ac, char **av)
         return 0;
     }
 
-    if(! check_password()) {
-        fprintf(stderr, "Authenticaton failure\n");
-        return 2;
+    if(! authenticate()) {
+        fprintf(stderr, "Authentication failure\n");
+        return 1;
     }
 
     execvp(av[0], av);

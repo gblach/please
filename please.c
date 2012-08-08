@@ -10,14 +10,17 @@
 # include <asm/param.h>
 # include <security/pam_misc.h>
 #endif
- 
 
-char *get_hostname()
-{
-    char hostname[MAXHOSTNAMELEN];
-    gethostname(hostname, sizeof(hostname));
-    return strdup(hostname);
-}
+#if defined(__FreeBSD__)
+struct pam_conv pamc = { &openpam_ttyconv, NULL };
+#elif defined(__linux__)
+struct pam_conv pamc = { &misc_conv, NULL };
+#endif
+pam_handle_t *pamh = NULL;
+int pam_err;
+
+#define PAM_RETURN_ON_FAILURE if(pam_err != PAM_SUCCESS) return pam_err;
+
 
 char *get_ttyname()
 {
@@ -29,22 +32,36 @@ char *get_ttyname()
 
 int authenticate()
 {
-#if defined(__FreeBSD__)
-    struct pam_conv pamc = { &openpam_ttyconv, NULL };
-#elif defined(__linux__)
-    struct pam_conv pamc = { &misc_conv, NULL };
-#endif
-    pam_handle_t *pamh = NULL;
-    int retval;
+    pam_err = pam_start("please", getlogin(), &pamc, &pamh);
+    PAM_RETURN_ON_FAILURE;
 
-    pam_start("please", getlogin(), &pamc, &pamh);
-    pam_set_item(pamh, PAM_RHOST, get_hostname());
-    pam_set_item(pamh, PAM_RUSER, getlogin());
-    pam_set_item(pamh, PAM_TTY, get_ttyname());
-    retval = pam_authenticate(pamh, 0);
-    pam_end(pamh, retval);
+    pam_err = pam_set_item(pamh, PAM_RUSER, getlogin());
+    PAM_RETURN_ON_FAILURE;
 
-    return retval == PAM_SUCCESS;
+    pam_err = pam_set_item(pamh, PAM_TTY, get_ttyname());
+    PAM_RETURN_ON_FAILURE;
+
+    pam_err = pam_authenticate(pamh, 0);
+    PAM_RETURN_ON_FAILURE;
+
+    if(PAM_NEW_AUTHTOK_REQD == pam_acct_mgmt(pamh, 0)) {
+        pam_err = pam_chauthtok(pamh, PAM_CHANGE_EXPIRED_AUTHTOK);
+        PAM_RETURN_ON_FAILURE;
+    }
+
+    pam_err = pam_setcred(pamh, PAM_ESTABLISH_CRED);
+    PAM_RETURN_ON_FAILURE;
+
+    pam_err = pam_open_session(pamh, 0);
+    PAM_RETURN_ON_FAILURE;
+
+    return pam_err;
+}
+
+void finish()
+{
+    pam_err = pam_close_session(pamh, 0);
+    pam_end(pamh, pam_err);
 }
 
 int main(int ac, char **av)
@@ -56,10 +73,13 @@ int main(int ac, char **av)
         return 0;
     }
 
-    if(! authenticate()) {
+    if(PAM_SUCCESS != authenticate()) {
         fprintf(stderr, "Authentication failure\n");
         return 1;
     }
 
     execvp(av[0], av);
+
+    finish();
+    return 0;
 }

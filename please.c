@@ -18,6 +18,7 @@ struct pam_conv pamc = { &misc_conv, NULL };
 #endif
 pam_handle_t *pamh = NULL;
 int pam_err;
+int pam_session_opened = 0;
 
 #define PAM_RETURN_ON_FAILURE if(pam_err != PAM_SUCCESS) return pam_err;
 
@@ -54,13 +55,17 @@ int authenticate()
 
     pam_err = pam_open_session(pamh, 0);
     PAM_RETURN_ON_FAILURE;
+    pam_session_opened = 1;
 
     return pam_err;
 }
 
 void finish()
 {
-    pam_err = pam_close_session(pamh, 0);
+    if(pam_session_opened) {
+        pam_err = pam_close_session(pamh, 0);
+    }
+
     pam_end(pamh, pam_err);
 }
 
@@ -73,8 +78,11 @@ int main(int ac, char **av)
         return 0;
     }
 
-    if(PAM_SUCCESS != authenticate()) {
+    authenticate();
+
+    if(PAM_SUCCESS != pam_err) {
         fprintf(stderr, "Authentication failure\n");
+        finish();
         return 1;
     }
 

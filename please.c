@@ -86,8 +86,7 @@ int main(int ac, char **av)
         return 1;
     }
 
-    execvp(av[0], av);
-
     finish();
+    execvp(av[0], av);
     return 0;
 }

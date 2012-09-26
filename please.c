@@ -71,6 +71,7 @@ void finish()
 
 int main(int ac, char **av)
 {
+    int err;
     av++;
 
     if(! av[0]) {
@@ -87,6 +88,8 @@ int main(int ac, char **av)
     }
 
     finish();
-    execvp(av[0], av);
-    return 0;
+    if(err = execvp(av[0], av)) {
+        fprintf(stderr, "Command '%s' not found\n", av[0]);
+        return err;
+    }
 }

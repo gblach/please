@@ -15,7 +15,7 @@ Installation on Ubuntu 12.04
 
 Installation on FreeBSD 9.0
 ---------------------------
-1. Install git: __cd /usr/ports/git && make install clean__
+1. Install git: __cd /usr/ports/devel/git && make install clean__
 2. Clone repository: __git clone git://github.com/MagikBSD/please.git__
 3. Build and install: __make && make install__
 4. Copy (and edit) pam rules: __cp /etc/pam.d/su /usr/local/etc/pam.d/please__

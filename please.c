@@ -20,20 +20,19 @@ pam_handle_t *pamh = NULL;
 int pam_err;
 int pam_session_opened = 0;
 
-#define PAM_RETURN_ON_FAILURE if(pam_err != PAM_SUCCESS) return pam_err;
+#define PAM_RETURN_ON_FAILURE if(pam_err != PAM_SUCCESS) return;
 
 
 char *get_ttyname()
 {
-    char *tty;
-    tty = ttyname(STDERR_FILENO);
+    char *tty = ttyname(STDERR_FILENO);
     if(! tty) tty = "tty";
     return tty;
 }
 
-int authenticate()
+void authenticate()
 {
-    pam_err = pam_start("please", getlogin(), &pamc, &pamh);
+    pam_err = pam_start("please", "root", &pamc, &pamh);
     PAM_RETURN_ON_FAILURE;
 
     pam_err = pam_set_item(pamh, PAM_RUSER, getlogin());
@@ -56,8 +55,6 @@ int authenticate()
     pam_err = pam_open_session(pamh, 0);
     PAM_RETURN_ON_FAILURE;
     pam_session_opened = 1;
-
-    return pam_err;
 }
 
 void finish()
@@ -88,6 +85,7 @@ int main(int ac, char **av)
     }
 
     finish();
+
     if(err = execvp(av[0], av)) {
         fprintf(stderr, "Command '%s' not found\n", av[0]);
         return err;

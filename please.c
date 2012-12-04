@@ -17,10 +17,8 @@ struct pam_conv pamc = { &openpam_ttyconv, NULL };
 struct pam_conv pamc = { &misc_conv, NULL };
 #endif
 pam_handle_t *pamh = NULL;
-int pam_err;
-int pam_session_opened = 0;
 
-#define PAM_RETURN_ON_FAILURE if(pam_err != PAM_SUCCESS) return;
+#define PAM_RETURN_ON_FAILURE if(pam_err != PAM_SUCCESS) goto pam_return;
 
 
 char *get_ttyname()
@@ -30,8 +28,10 @@ char *get_ttyname()
     return tty;
 }
 
-void authenticate()
+int authenticate()
 {
+    int pam_err;
+
     pam_err = pam_start("please", "root", &pamc, &pamh);
     PAM_RETURN_ON_FAILURE;
 
@@ -44,7 +44,10 @@ void authenticate()
     pam_err = pam_authenticate(pamh, 0);
     PAM_RETURN_ON_FAILURE;
 
-    if(PAM_NEW_AUTHTOK_REQD == pam_acct_mgmt(pamh, 0)) {
+    pam_err = pam_acct_mgmt(pamh, 0);
+    PAM_RETURN_ON_FAILURE;
+
+    if(pam_err == PAM_NEW_AUTHTOK_REQD) {
         pam_err = pam_chauthtok(pamh, PAM_CHANGE_EXPIRED_AUTHTOK);
         PAM_RETURN_ON_FAILURE;
     }
@@ -54,16 +57,13 @@ void authenticate()
 
     pam_err = pam_open_session(pamh, 0);
     PAM_RETURN_ON_FAILURE;
-    pam_session_opened = 1;
-}
 
-void finish()
-{
-    if(pam_session_opened) {
-        pam_err = pam_close_session(pamh, 0);
-    }
+    pam_err = pam_close_session(pamh, 0);
+    PAM_RETURN_ON_FAILURE;
 
+pam_return:
     pam_end(pamh, pam_err);
+    return (pam_err == PAM_SUCCESS) - 1;
 }
 
 int main(int ac, char **av)
@@ -76,17 +76,12 @@ int main(int ac, char **av)
         return 0;
     }
 
-    authenticate();
-
-    if(PAM_SUCCESS != pam_err) {
+    if((err = authenticate())) {
         fprintf(stderr, "Authentication failure\n");
-        finish();
-        return 1;
+        return err;
     }
 
-    finish();
-
-    if(err = execvp(av[0], av)) {
+    if((err = execvp(av[0], av))) {
         fprintf(stderr, "Command '%s' not found\n", av[0]);
         return err;
     }

@@ -2,6 +2,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <security/pam_appl.h>
+#include <sys/types.h>
 
 #if defined(__FreeBSD__)
 # include <sys/param.h>
@@ -80,6 +81,9 @@ int main(int ac, char **av)
         fprintf(stderr, "Authentication failure\n");
         return err;
     }
+
+    setuid(0);
+    setgid(0);
 
     if((err = execvp(av[0], av))) {
         fprintf(stderr, "Command '%s' not found\n", av[0]);

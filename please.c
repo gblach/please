@@ -107,8 +107,15 @@ int main(int ac, char **av)
         return err;
     }
 
-    setuid(0);
-    setgid(0);
+    if((err = setuid(0))) {
+        perror(NULL);
+        return err;
+    }
+
+    if((err = setgid(0))) {
+        perror(NULL);
+        return err;
+    }
 
     if((err = execvp(av[0], av))) {
         fprintf(stderr, "Command '%s' not found\n", av[0]);

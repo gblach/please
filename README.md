@@ -5,7 +5,7 @@ Please - really tiny sudo replacement
 Only pam authentication and executing command.
 
 
-Installation on Ubuntu 12.04
+Installation on Ubuntu 13.04
 ----------------------------
 1. Install git, compiler and libpam-dev: __apt-get install git build-essential libpam0g-dev__
 2. Clone repository: __git clone git://github.com/MagikBSD/please.git__
@@ -13,7 +13,7 @@ Installation on Ubuntu 12.04
 4. Copy (and edit) pam rules: __cp /etc/pam.d/su /etc/pam.d/please__
 
 
-Installation on FreeBSD 9.0
+Installation on FreeBSD 9.1
 ---------------------------
 1. Install git: __cd /usr/ports/devel/git && make install clean__
 2. Clone repository: __git clone git://github.com/MagikBSD/please.git__

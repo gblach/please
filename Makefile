@@ -6,7 +6,7 @@ CC?=cc
 CFLAGS?=-O2 -march=native
 LDFLAGS?=
 LIBS=-lpam $(shell if [ `uname` = Linux ]; then echo -lpam_misc; fi)
-PREFIX=/usr/local
+PREFIX?=/usr/local
 
 
 all: ${BIN} ${MAN}.gz
@@ -23,9 +23,9 @@ ${MAN}.gz:
 
 install: all
 	install -m 0755 -o 0 -g 0 -d ${PREFIX}/bin
-	install -m 6755 -o 0 -g 0 -s ${BIN} ${PREFIX}/bin
+	install -m 6555 -o 0 -g 0 -s ${BIN} ${PREFIX}/bin
 	install -m 0755 -o 0 -g 0 -d ${PREFIX}/man/man1
-	install -m 0644 -o 0 -g 0 ${MAN}.gz ${PREFIX}/man/man1
+	install -m 0444 -o 0 -g 0 ${MAN}.gz ${PREFIX}/man/man1
 
 clean:
 	rm -f ${BIN} *.o ${MAN} ${MAN}.gz

@@ -21,7 +21,7 @@ ${MAN}.gz:
 	rst2man ${BIN}.rst > ${MAN}
 	gzip -f -9 ${MAN}
 
-install: ${BIN}
+install: all
 	install -d ${PREFIX}/bin
 	install -m 6755 -o 0 -g 0 -s ${BIN} ${PREFIX}/bin
 	install -m 0644 -o 0 -g 0 ${MAN}.gz ${PREFIX}/man/man1

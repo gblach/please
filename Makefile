@@ -22,8 +22,9 @@ ${MAN}.gz:
 	gzip -f -9 ${MAN}
 
 install: all
-	install -d ${PREFIX}/bin
+	install -m 0755 -o 0 -g 0 -d ${PREFIX}/bin
 	install -m 6755 -o 0 -g 0 -s ${BIN} ${PREFIX}/bin
+	install -m 0755 -o 0 -g 0 -d ${PREFIX}/man/man1
 	install -m 0644 -o 0 -g 0 ${MAN}.gz ${PREFIX}/man/man1
 
 clean:

@@ -9,7 +9,7 @@ LIBS=-lpam $(shell if [ `uname` = Linux ]; then echo -lpam_misc; fi)
 PREFIX?=/usr/local
 
 
-all: ${BIN} ${MAN}.gz
+all: ${BIN} ${MAN}
 
 ${BIN}: ${OBJ}
 	${CC} ${LDFLAGS} -o $@ ${OBJ} ${LIBS}
@@ -17,19 +17,18 @@ ${BIN}: ${OBJ}
 .c.o:
 	${CC} -c ${CFLAGS} -o $@ $<
 
-${MAN}.gz:
-	rst2man ${BIN}.rst > ${MAN}
-	gzip -f -9 ${MAN}
+${MAN}:
+	rst2man ${BIN}.rst $@
 
 install: all
 	install -m 0755 -o 0 -g 0 -d ${PREFIX}/bin
 	install -m 6555 -o 0 -g 0 -s ${BIN} ${PREFIX}/bin
 	install -m 0755 -o 0 -g 0 -d ${PREFIX}/man/man1
-	install -m 0444 -o 0 -g 0 ${MAN}.gz ${PREFIX}/man/man1
+	install -m 0444 -o 0 -g 0 ${MAN} ${PREFIX}/man/man1
 
 clean:
-	rm -f ${BIN} *.o ${MAN} ${MAN}.gz
+	rm -f ${BIN} *.o ${MAN}
 
 
 ${BIN}.o: ${BIN}.c
-${MAN}.gz: ${BIN}.rst
+${MAN}: ${BIN}.rst

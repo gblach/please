@@ -21,10 +21,10 @@ ${MAN}:
 	rst2man ${BIN}.rst $@
 
 install: all
-	install -m 0755 -o 0 -g 0 -d ${PREFIX}/bin
-	install -m 6555 -o 0 -g 0 -s ${BIN} ${PREFIX}/bin
-	install -m 0755 -o 0 -g 0 -d ${PREFIX}/man/man1
-	install -m 0444 -o 0 -g 0 ${MAN} ${PREFIX}/man/man1
+	install -m 0755 -o 0 -g 0 -d ${DESTDIR}${PREFIX}/bin
+	install -m 6555 -o 0 -g 0 -s ${BIN} ${DESTDIR}${PREFIX}/bin
+	install -m 0755 -o 0 -g 0 -d ${DESTDIR}${PREFIX}/man/man1
+	install -m 0444 -o 0 -g 0 ${MAN} ${DESTDIR}${PREFIX}/man/man1
 
 clean:
 	rm -f ${BIN} *.o ${MAN}

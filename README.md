@@ -5,7 +5,7 @@ Please - really tiny sudo replacement
 Only pam authentication and executing command.
 
 
-Installation on Debian 7.1.0
+Installation on Debian 7.2.0
 ----------------------------
 1. Install git, compiler and libpam-dev: __apt-get install git build-essential libpam0g-dev__
 2. Install docutils: __apt-get install python-docutils__

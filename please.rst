@@ -12,8 +12,8 @@ execute a command as root
 Synopsis
 ========
 
-**please** <command>
-
+| **please** <command>
+| **please** -
 
 Description
 ===========
@@ -52,3 +52,7 @@ Examples
 | To get a file listing of an unreadable directory:
 |
 |   $ please ls /usr/local/protected
+|
+| Run a root login shell:
+|
+|   $ please -

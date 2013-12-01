@@ -23,6 +23,8 @@
  * SUCH DAMAGE.
  */
 
+#include <libgen.h>
+#include <pwd.h>
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
@@ -115,6 +117,16 @@ int main(int ac, char **av)
     if((err = setgid(0))) {
         perror(NULL);
         return err;
+    }
+
+    if(!strcmp(av[0], "-")) {
+        struct passwd *pwd = getpwuid(0);
+        char *shell_name;
+        asprintf(&shell_name, "-%s", basename(pwd->pw_shell));
+
+        if((err = execl(pwd->pw_shell, shell_name, NULL))) {
+            return err;
+        }
     }
 
     if((err = execvp(av[0], av))) {

@@ -1,3 +1,6 @@
 language: c
-install: sudo apt-get install -q libpam0g-dev python-docutils
+install: sudo apt-get install -qq libpam0g-dev python-docutils
 script: make
+compiler:
+  - clang
+  - gcc

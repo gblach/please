@@ -35,6 +35,7 @@
 # include <sys/param.h>
 # include <security/openpam.h>
 #elif defined(__linux__)
+# define _GNU_SOURCE
 # include <asm/param.h>
 # include <security/pam_misc.h>
 #endif

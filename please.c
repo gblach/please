@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2013 Grzegorz Blach. All rights reserved.
+ * Copyright (c) 2012-2014 Grzegorz Blach. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -41,46 +41,36 @@
 # include <security/pam_misc.h>
 #endif
 
-#if defined(__FreeBSD__)
-struct pam_conv pamc = { &openpam_ttyconv, NULL };
-#elif defined(__linux__)
-struct pam_conv pamc = { &misc_conv, NULL };
-#endif
-pam_handle_t *pamh = NULL;
-
 #define PAM_RETURN_ON_FAILURE if(pam_err != PAM_SUCCESS) goto pam_return;
-
-
-char *get_ttyname()
-{
-    char *tty = ttyname(STDERR_FILENO);
-    if(! tty) tty = "tty";
-    return tty;
-}
 
 int authenticate()
 {
+#if defined(__FreeBSD__)
+    struct pam_conv pamc = { &openpam_ttyconv, NULL };
+#elif defined(__linux__)
+    struct pam_conv pamc = { &misc_conv, NULL };
+#endif
+    pam_handle_t *pamh = NULL;
     int pam_err;
+    char *username = getlogin();
 
-    pam_err = pam_start("please", "root", &pamc, &pamh);
+    pam_err = pam_start("please", username, &pamc, &pamh);
     PAM_RETURN_ON_FAILURE;
 
-    pam_err = pam_set_item(pamh, PAM_RUSER, getlogin());
+    pam_err = pam_set_item(pamh, PAM_RUSER, username);
     PAM_RETURN_ON_FAILURE;
 
-    pam_err = pam_set_item(pamh, PAM_TTY, get_ttyname());
+    pam_err = pam_set_item(pamh, PAM_TTY, ttyname(STDERR_FILENO));
     PAM_RETURN_ON_FAILURE;
 
     pam_err = pam_authenticate(pamh, 0);
     PAM_RETURN_ON_FAILURE;
 
     pam_err = pam_acct_mgmt(pamh, 0);
-    PAM_RETURN_ON_FAILURE;
-
     if(pam_err == PAM_NEW_AUTHTOK_REQD) {
         pam_err = pam_chauthtok(pamh, PAM_CHANGE_EXPIRED_AUTHTOK);
-        PAM_RETURN_ON_FAILURE;
     }
+    PAM_RETURN_ON_FAILURE;
 
     pam_err = pam_setcred(pamh, PAM_ESTABLISH_CRED);
     PAM_RETURN_ON_FAILURE;
@@ -91,9 +81,12 @@ int authenticate()
     pam_err = pam_close_session(pamh, 0);
     PAM_RETURN_ON_FAILURE;
 
+    pam_err = pam_setcred(pamh, PAM_DELETE_CRED);
+    PAM_RETURN_ON_FAILURE;
+
 pam_return:
     pam_end(pamh, pam_err);
-    return (pam_err == PAM_SUCCESS) - 1;
+    return pam_err == PAM_SUCCESS ? 0 : -1;
 }
 
 int main(int ac, char **av)

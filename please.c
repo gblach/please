@@ -23,21 +23,15 @@
  * SUCH DAMAGE.
  */
 
-#define _GNU_SOURCE
-
-#include <libgen.h>
 #include <pwd.h>
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
 #include <security/pam_appl.h>
-#include <sys/types.h>
 
 #if defined(__FreeBSD__)
-# include <sys/param.h>
 # include <security/openpam.h>
 #elif defined(__linux__)
-# include <asm/param.h>
 # include <security/pam_misc.h>
 #endif
 
@@ -116,10 +110,8 @@ int main(int ac, char **av)
 
     if(!strcmp(av[0], "-")) {
         struct passwd *pwd = getpwuid(0);
-        char *shell_name;
-        asprintf(&shell_name, "-%s", basename(pwd->pw_shell));
-
-        if((err = execl(pwd->pw_shell, shell_name, NULL))) {
+        if((err = execl(pwd->pw_shell, pwd->pw_shell, NULL))) {
+            perror(NULL);
             return err;
         }
     }

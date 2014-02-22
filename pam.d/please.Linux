@@ -1,0 +1,29 @@
+#
+# The PAM configuration file for the Shadow `please' service
+#
+
+# This allows root to use `please' without passwords (normal operation)
+auth       sufficient pam_rootok.so
+
+# Uncomment this to force users to be a member of group root
+# before they can use `please'. You can also add "group=foo"
+# to the end of this line if you want to use a group other
+# than the default "root" (but this may have side effect of
+# denying "root" user, unless she's a member of "foo" or explicitly
+# permitted earlier by e.g. "sufficient pam_rootok.so").
+# auth       required   pam_wheel.so
+
+# Uncomment this if you want wheel members to be able to
+# use `please' without a password.
+# auth       sufficient pam_wheel.so trust
+
+# Uncomment this if you want members of a specific group to not
+# be allowed to use `please' at all.
+# auth       required   pam_wheel.so deny group=noplease
+
+# The standard Unix authentication modules, used with
+# NIS (man nsswitch) as well as normal /etc/passwd and
+# /etc/shadow entries.
+@include common-auth
+@include common-account
+@include common-session

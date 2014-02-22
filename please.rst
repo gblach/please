@@ -39,7 +39,6 @@ Files
 =====
 
 /etc/pam.d/please or /usr/local/etc/pam.d/please    PAM configuration for please.
-It's recommend to create this file on the basis of /etc/pam.d/su
 
 
 Examples
@@ -53,6 +52,6 @@ Examples
 |
 |   $ please ls /usr/local/protected
 |
-| Run a root login shell:
+| Run a root shell:
 |
 |   $ please -

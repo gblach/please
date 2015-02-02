@@ -9,6 +9,3 @@ auth		include		system
 
 # account
 account		include		system
-
-# session
-session		required	pam_permit.so

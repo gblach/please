@@ -26,4 +26,4 @@ auth       sufficient pam_rootok.so
 # /etc/shadow entries.
 @include common-auth
 @include common-account
-@include common-session
+

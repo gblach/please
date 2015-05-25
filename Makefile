@@ -1,16 +1,14 @@
 BIN=please
 OBJ=${BIN}.o
 MAN=${BIN}.1
-PAM=pam.d/${BIN}.$(shell echo `uname`)
-PAM!=echo ${PAM}`uname`
+PAM!=echo pam.d/${BIN}.`uname`
 
 CC?=cc
 CFLAGS?=-O2 -march=native
 LDFLAGS?=
-LIBS=-lpam $(shell if [ `uname` = Linux ]; then echo -lpam_misc; fi)
+LIBS!=echo -n '-lpam'; if [ `uname` = Linux ]; then echo -n ' -lpam_misc'; fi
 PREFIX?=/usr/local
-PAMDIR=$(shell if [ `uname` = FreeBSD ]; then echo -n ${PREFIX}; fi)/etc/pam.d
-PAMDIR!=if [ `uname` = FreeBSD ]; then echo -n ${PREFIX}; fi; echo ${PAMDIR}
+PAMDIR!=if [ `uname` = FreeBSD ]; then echo -n ${PREFIX}; fi; echo /etc/pam.d
 
 
 all: ${BIN} ${MAN}

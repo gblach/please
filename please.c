@@ -26,6 +26,7 @@
 #include <pwd.h>
 #include <stdio.h>
 #include <string.h>
+#include <syslog.h>
 #include <unistd.h>
 #include <security/pam_appl.h>
 
@@ -67,6 +68,11 @@ int authenticate()
     PAM_RETURN_ON_FAILURE;
 
 pam_return:
+    if(pam_err != PAM_SUCCESS) {
+        openlog("please", 0, LOG_AUTH);
+        syslog(LOG_NOTICE, pam_strerror(pamh, pam_err));
+        closelog();
+    }
     pam_end(pamh, pam_err);
     return pam_err == PAM_SUCCESS ? 0 : -1;
 }

@@ -5,7 +5,7 @@ Please - really tiny sudo replacement
 Only pam authentication and executing command.
 
 
-Installation on Debian 8.0
+Installation on Debian 8.1
 --------------------------
 1. Install git, compiler and libpam-dev: __apt-get install git build-essential libpam0g-dev__
 2. Install docutils: __apt-get install python-docutils__
@@ -14,7 +14,7 @@ Installation on Debian 8.0
 5. (optional) Install pam rules: __make install-pam__
 
 
-Installation on FreeBSD 10.1
+Installation on FreeBSD 10.2
 ----------------------------
 1. Install git: __make install clean -C /usr/ports/devel/git__
 2. Install docutils: __make install clean -C /usr/ports/textproc/py-docutils__

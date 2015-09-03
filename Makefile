@@ -23,14 +23,14 @@ ${MAN}:
 	rst2man ${BIN}.rst $@
 
 install: all
-	install -m 0755 -o 0 -g 0 -d ${DESTDIR}${PREFIX}/bin
-	install -m 6555 -o 0 -g 0 -s ${BIN} ${DESTDIR}${PREFIX}/bin
-	install -m 0755 -o 0 -g 0 -d ${DESTDIR}${PREFIX}/man/man1
-	install -m 0444 -o 0 -g 0 ${MAN} ${DESTDIR}${PREFIX}/man/man1
+	install -d ${DESTDIR}${PREFIX}/bin
+	install -m 6555 -s ${BIN} ${DESTDIR}${PREFIX}/bin
+	install -d ${DESTDIR}${PREFIX}/man/man1
+	install -m 0444 ${MAN} ${DESTDIR}${PREFIX}/man/man1
 
 install-pam:
-	install -m 0755 -o 0 -g 0 -d ${DESTDIR}${PAMDIR}
-	install -m 0644 -o 0 -g 0 ${PAM} ${DESTDIR}${PAMDIR}/${BIN}
+	install -d ${DESTDIR}${PAMDIR}
+	install -m 0644 ${PAM} ${DESTDIR}${PAMDIR}/${BIN}
 
 clean:
 	rm -f ${BIN} *.o ${MAN}

@@ -1,6 +1,7 @@
 BIN=please
 OBJ=${BIN}.o
 MAN=${BIN}.1
+RST=${BIN}.rst
 PAM!=echo pam.d/${BIN}.`uname`
 
 CC?=cc
@@ -19,9 +20,6 @@ ${BIN}: ${OBJ}
 .c.o:
 	${CC} -c ${CFLAGS} -o $@ $<
 
-${MAN}:
-	rst2man ${BIN}.rst $@
-
 install: all
 	install -d ${DESTDIR}${PREFIX}/bin
 	install -m 6555 -s ${BIN} ${DESTDIR}${PREFIX}/bin
@@ -32,9 +30,13 @@ install-pam:
 	install -d ${DESTDIR}${PAMDIR}
 	install -m 0644 ${PAM} ${DESTDIR}${PAMDIR}/${BIN}
 
+${MAN}: ${RST}
+	rst2man $> $@
+
+man: ${MAN}
+
 clean:
 	rm -f ${BIN} *.o ${MAN}
 
 
 ${BIN}.o: ${BIN}.c
-${MAN}: ${BIN}.rst

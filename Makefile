@@ -12,7 +12,7 @@ PREFIX?=/usr/local
 PAMDIR!=if [ `uname` = FreeBSD ]; then echo -n ${PREFIX}; fi; echo /etc/pam.d
 
 
-all: ${BIN} ${MAN}
+all: ${BIN}
 
 ${BIN}: ${OBJ}
 	${CC} ${LDFLAGS} -o $@ ${OBJ} ${LIBS}
@@ -30,13 +30,16 @@ install-pam:
 	install -d ${DESTDIR}${PAMDIR}
 	install -m 0644 ${PAM} ${DESTDIR}${PAMDIR}/${BIN}
 
-${MAN}: ${RST}
-	rst2man $> $@
+clean:
+	rm -rf ${BIN} ${OBJ}
 
 man: ${MAN}
 
-clean:
-	rm -f ${BIN} *.o ${MAN}
+${MAN}: ${RST}
+	rst2man $> $@
+
+man-clean:
+	rm -f ${MAN}
 
 
 ${BIN}.o: ${BIN}.c

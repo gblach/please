@@ -62,17 +62,18 @@ int authenticate()
     PAM_RETURN_ON_FAILURE;
 
     pam_err = pam_acct_mgmt(pamh, 0);
-    if(pam_err == PAM_NEW_AUTHTOK_REQD) {
+    if(pam_err == PAM_NEW_AUTHTOK_REQD)
         pam_err = pam_chauthtok(pamh, PAM_CHANGE_EXPIRED_AUTHTOK);
-    }
     PAM_RETURN_ON_FAILURE;
 
 pam_return:
-    if(pam_err != PAM_SUCCESS) {
-        openlog("please", 0, LOG_AUTH);
-        syslog(LOG_NOTICE, pam_strerror(pamh, pam_err));
-        closelog();
-    }
+    openlog("please", 0, LOG_AUTH);
+    if(pam_err == PAM_SUCCESS)
+        syslog(LOG_NOTICE, "user %s authenticated\n", username);
+    else
+        syslog(LOG_NOTICE, "%s", pam_strerror(pamh, pam_err));
+    closelog();
+
     pam_end(pamh, pam_err);
     return pam_err == PAM_SUCCESS ? 0 : -1;
 }

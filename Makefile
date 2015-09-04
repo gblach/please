@@ -26,10 +26,6 @@ install: all
 	install -d ${DESTDIR}${PREFIX}/man/man1
 	install -m 0444 ${MAN} ${DESTDIR}${PREFIX}/man/man1
 
-install-pam:
-	install -d ${DESTDIR}${PAMDIR}
-	install -m 0644 ${PAM} ${DESTDIR}${PAMDIR}/${BIN}
-
 clean:
 	rm -rf ${BIN} ${OBJ}
 

@@ -1,7 +1,5 @@
 BIN=please
 OBJ=${BIN}.o
-MAN=${BIN}.1
-RST=${BIN}.rst
 PAM!=echo pam.d/${BIN}.`uname`
 
 CC?=cc
@@ -24,18 +22,19 @@ install: all
 	install -d ${DESTDIR}${PREFIX}/bin
 	install -m 6555 -s ${BIN} ${DESTDIR}${PREFIX}/bin
 	install -d ${DESTDIR}${PREFIX}/man/man1
-	install -m 0444 ${MAN} ${DESTDIR}${PREFIX}/man/man1
+	install -m 0444 ${BIN}.1 ${DESTDIR}${PREFIX}/man/man1
 
 clean:
 	rm -rf ${BIN} ${OBJ}
 
-man: ${MAN}
 
-${MAN}: ${RST}
+man: ${BIN}.1
+
+${BIN}.1: ${BIN}.rst
 	rst2man $> $@
 
 man-clean:
-	rm -f ${MAN}
+	rm -f ${BIN}.1
 
 
 ${BIN}.o: ${BIN}.c

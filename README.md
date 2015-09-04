@@ -5,19 +5,17 @@ Please - really tiny sudo replacement
 Only pam authentication and executing command.
 
 
-Installation on Debian 8.1
---------------------------
+Installation on Debian / Ubuntu
+-------------------------------
 1. Install git, compiler and libpam-dev: __apt-get install git build-essential libpam0g-dev__
-2. Install docutils: __apt-get install python-docutils__
-3. Clone repository: __git clone https://github.com/MagikBSD/please.git__
-4. Build and install: __make && make install__
-5. (optional) Install pam rules: __make install-pam__
+2. Clone repository: __git clone https://github.com/MagikBSD/please.git__
+3. Build and install: __make && make install__
+4. Install (and edit) pam rules: __cp pam.d/please.Debian /etc/pam.d/please__
 
 
-Installation on FreeBSD 10.2
-----------------------------
-1. Install git: __make install clean -C /usr/ports/devel/git__
-2. Install docutils: __make install clean -C /usr/ports/textproc/py-docutils__
-3. Clone repository: __git clone https://github.com/MagikBSD/please.git__
-4. Build and install: __make && make install__
-5. (optional) Install pam rules: __make install-pam__
+Installation on FreeBSD
+-----------------------
+1. Install git: __pkg install git__ or __make install clean -C /usr/ports/devel/git__
+2. Clone repository: __git clone https://github.com/MagikBSD/please.git__
+3. Build and install: __make && make install__
+4. Install (and edit) pam rules: __cp pam.d/please.FreeBSD /usr/local/etc/pam.d/please__

@@ -2,10 +2,14 @@
 # PAM configuration for the "please" service
 #
 
-# auth
+# Allow root to use `please` without password
 auth		sufficient	pam_rootok.so		no_warn
-auth		requisite	pam_group.so		no_warn group=wheel fail_safe ruser
-auth		include		system
 
-# account
+# Allow to use `please` only by members of group wheel
+auth		requisite	pam_group.so		no_warn group=wheel ruser
+
+# Allow to use `please` without password (by members of group wheel)
+#auth		sufficient	pam_group.so		no_warn group=wheel ruser
+
+auth		include		system
 account		include		system

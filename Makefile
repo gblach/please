@@ -7,7 +7,6 @@ CFLAGS?=-O2 -march=native
 LDFLAGS?=
 LIBS!=echo -n '-lpam'; if [ `uname` = Linux ]; then echo -n ' -lpam_misc'; fi
 PREFIX?=/usr/local
-PAMDIR!=if [ `uname` = FreeBSD ]; then echo -n ${PREFIX}; fi; echo /etc/pam.d
 
 
 all: ${BIN}
@@ -25,7 +24,7 @@ install: all
 	install -m 0444 ${BIN}.1 ${DESTDIR}${PREFIX}/man/man1
 
 clean:
-	rm -rf ${BIN} ${OBJ}
+	rm -f ${BIN} ${OBJ}
 
 
 man: ${BIN}.1

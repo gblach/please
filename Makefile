@@ -1,6 +1,5 @@
 BIN=please
 OBJ=${BIN}.o
-PAM!=echo pam.d/${BIN}.`uname`
 
 CC?=cc
 CFLAGS?=-O2 -march=native

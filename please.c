@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2015 Grzegorz Blach. All rights reserved.
+ * Copyright (c) 2012-2016 Grzegorz Blach. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -94,11 +94,6 @@ int main(int ac, char **av)
     }
 
     if((err = setuid(0))) {
-        perror(NULL);
-        return err;
-    }
-
-    if((err = setgid(0))) {
         perror(NULL);
         return err;
     }

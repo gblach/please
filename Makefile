@@ -18,7 +18,7 @@ ${BIN}: ${OBJ}
 
 install: all
 	install -d ${DESTDIR}${PREFIX}/bin
-	install -m 6555 -s ${BIN} ${DESTDIR}${PREFIX}/bin
+	install -m 4555 -s ${BIN} ${DESTDIR}${PREFIX}/bin
 	install -d ${DESTDIR}${PREFIX}/man/man1
 	install -m 0444 ${BIN}.1 ${DESTDIR}${PREFIX}/man/man1
 

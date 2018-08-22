@@ -2,8 +2,8 @@ BIN=please
 OBJ=${BIN}.o
 
 CC?=cc
-CFLAGS?=-O2 -march=native
-LDFLAGS?=
+CFLAGS?=-O2 -march=native -fstack-protector-strong -pipe
+LDFLAGS?=-Wl,-z,relro,-z,now
 LIBS!=echo -n '-lpam'; if [ `uname` = Linux ]; then echo -n ' -lpam_misc'; fi
 PREFIX?=/usr/local
 

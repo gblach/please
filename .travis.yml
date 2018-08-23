@@ -1,8 +1,0 @@
-language: c
-before_install:
-  - sudo apt-get update -qq
-  - sudo apt-get install -y libpam0g-dev
-script: make LIBS="-lpam -lpam_misc"
-compiler:
-  - clang
-  - gcc

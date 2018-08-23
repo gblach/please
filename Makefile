@@ -17,10 +17,10 @@ ${BIN}: ${OBJ}
 	${CC} -c ${CFLAGS} -o $@ $<
 
 ${BIN}.1.gz: ${BIN}.1
-	gzip -k -9 $<
+	gzip -k -9 $< $>
 
 ${BIN}.1: ${BIN}.rst
-	rst2man $> $@
+	rst2man $< $> $@
 
 install: all
 	install -d ${DESTDIR}${PREFIX}/bin

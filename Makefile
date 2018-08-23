@@ -8,7 +8,7 @@ LIBS!=echo -n '-lpam'; if [ `uname` = Linux ]; then echo -n ' -lpam_misc'; fi
 PREFIX?=/usr/local
 
 
-all: ${BIN}
+all: ${BIN} ${BIN}.1.gz
 
 ${BIN}: ${OBJ}
 	${CC} ${LDFLAGS} -o $@ ${OBJ} ${LIBS}
@@ -16,23 +16,20 @@ ${BIN}: ${OBJ}
 .c.o:
 	${CC} -c ${CFLAGS} -o $@ $<
 
-install: all
-	install -d ${DESTDIR}${PREFIX}/bin
-	install -m 4555 -s ${BIN} ${DESTDIR}${PREFIX}/bin
-	install -d ${DESTDIR}${PREFIX}/man/man1
-	install -m 0444 ${BIN}.1 ${DESTDIR}${PREFIX}/man/man1
-
-clean:
-	rm -f ${BIN} ${OBJ}
-
-
-man: ${BIN}.1
+${BIN}.1.gz: ${BIN}.1
+	gzip -k -9 $<
 
 ${BIN}.1: ${BIN}.rst
 	rst2man $> $@
 
-man-clean:
-	rm -f ${BIN}.1
+install: all
+	install -d ${DESTDIR}${PREFIX}/bin
+	install -m 4555 -s ${BIN} ${DESTDIR}${PREFIX}/bin
+	install -d ${DESTDIR}${PREFIX}/man/man1
+	install -m 0444 ${BIN}.1.gz ${DESTDIR}${PREFIX}/man/man1
+
+clean:
+	rm -f ${BIN} ${OBJ} ${BIN}.1.gz
 
 
 ${BIN}.o: ${BIN}.c

@@ -1,0 +1,15 @@
+#
+# PAM configuration for the "please" service
+#
+
+# Allow root to use `please` without password
+auth		sufficient	pam_rootok.so
+
+# Allow to use `please` only by members of group wheel
+auth		requisite	pam_wheel.so		group=wheel use_uid
+
+# Allow to use `please` without password (by members of group wheel)
+#auth		sufficient	pam_wheel.so		group=wheel trust use_uid
+
+auth		include		common-auth
+account		include		common-account

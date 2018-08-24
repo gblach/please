@@ -101,6 +101,11 @@ int main(int ac, char **av)
         return err;
     }
 
+    if((err = setgid(0))) {
+        perror(NULL);
+        return err;
+    }
+
     if(!strcmp(av[0], "-")) {
         struct passwd *pwd = getpwuid(0);
         if((err = execl(pwd->pw_shell, pwd->pw_shell, NULL))) {

@@ -52,6 +52,13 @@ Installation on openSUSE
 
 Installation on FreeBSD
 -----------------------
+
+## From package
+```
+pkg install please
+```
+
+## From source
 1. Install git: __pkg install git__ or __make install clean -C /usr/ports/devel/git__
 2. Clone repository: __git clone https://github.com/MagikBSD/please.git__
 3. Build and install: __make && make install__

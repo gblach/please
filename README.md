@@ -62,4 +62,4 @@ pkg install please
 1. Install git: __pkg install git__ or __make install clean -C /usr/ports/devel/git__
 2. Clone repository: __git clone https://github.com/gblach/please.git__
 3. Build and install: __make && make install__
-4. Install (and edit) pam rules: __cp pam.d/please.FreeBSD /usr/local/etc/pam.d/please__
+4. Install (and edit) pam rules: __cp pam.d/please.BSD /usr/local/etc/pam.d/please__

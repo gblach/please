@@ -30,7 +30,7 @@
 #include <unistd.h>
 #include <security/pam_appl.h>
 
-#if defined(__FreeBSD__)
+#if defined(__FreeBSD__) || defined(__DragonFly__) || defined(__NetBSD__)
 # include <security/openpam.h>
 #elif defined(__linux__)
 # include <security/pam_misc.h>
@@ -40,7 +40,7 @@
 
 int authenticate()
 {
-#if defined(__FreeBSD__)
+#if defined(__FreeBSD__) || defined(__DragonFly__) || defined(__NetBSD__)
     struct pam_conv pamc = { &openpam_ttyconv, NULL };
 #elif defined(__linux__)
     struct pam_conv pamc = { &misc_conv, NULL };

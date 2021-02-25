@@ -50,15 +50,15 @@ Installation on openSUSE
 4. Install (and edit) pam rules: __cp pam.d/please.openSUSE /etc/pam.d/please__
 
 
-Installation on FreeBSD
------------------------
+Installation on FreeBSD / DragonFly / NetBSD
+--------------------------------------------
 
-## From package
+### From package (only FreeBSD and DragonFly)
 ```
 pkg install please
 ```
 
-## From source
+### From source
 1. Install git: __pkg install git__ or __make install clean -C /usr/ports/devel/git__
 2. Clone repository: __git clone https://github.com/gblach/please.git__
 3. Build and install: __make && make install__

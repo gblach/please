@@ -34,8 +34,8 @@ Installation on Debian / Ubuntu
 4. Install (and edit) pam rules: __cp pam.d/please.Debian /etc/pam.d/please__
 
 
-Installation on Fedora
-----------------------
+Installation on Fedora / CentOS
+-------------------------------
 1. Install git, compiler and pam-devel: __dnf install git gcc pam-devel__
 2. Clone repository: __git clone https://github.com/gblach/please.git__
 3. Build and install: __make && make install__

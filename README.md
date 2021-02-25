@@ -50,10 +50,10 @@ Installation on openSUSE
 4. Install (and edit) pam rules: __cp pam.d/please.openSUSE /etc/pam.d/please__
 
 
-Installation on FreeBSD / DragonFly / NetBSD
---------------------------------------------
+Installation on FreeBSD / DragonFly
+-----------------------------------
 
-### From package (only FreeBSD and DragonFly)
+### From package
 ```
 pkg install please
 ```
@@ -63,3 +63,11 @@ pkg install please
 2. Clone repository: __git clone https://github.com/gblach/please.git__
 3. Build and install: __make && make install__
 4. Install (and edit) pam rules: __cp pam.d/please.BSD /usr/local/etc/pam.d/please__
+
+
+Installation on NetBSD
+----------------------
+1. Install git and ca-certificates: __pkgin install git ca-certificates__
+2. Clone repository: __git clone https://github.com/gblach/please.git__
+3. Build and install: __make && make install__
+4. Install (and edit) pam rules: __cp pam.d/please.BSD /etc/pam.d/please__

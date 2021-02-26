@@ -26,8 +26,8 @@ Run a root shell:
     $ please -
 
 
-Installation on Debian / Ubuntu
--------------------------------
+Installation on Debian
+----------------------
 1. Install git, compiler and libpam-dev: __apt-get install git build-essential libpam0g-dev__
 2. Clone repository: __git clone https://github.com/gblach/please.git__
 3. Build and install: __make && make install__

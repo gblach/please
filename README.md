@@ -56,6 +56,16 @@ make && make install
 cp pam.d/please.openSUSE /etc/pam.d/please
 ```
 
+Installation on ArchLinux
+-------------------------
+```
+pacman -S git gcc make
+git clone https://github.com/gblach/please.git
+cd please/
+make && make install
+cp pam.d/please.Fedora /etc/pam.d/please
+```
+
 Installation on FreeBSD / DragonFly
 -----------------------------------
 

@@ -6,10 +6,10 @@
 auth		sufficient	pam_rootok.so
 
 # Allow to use `please` only by members of group root
-auth		requisite	pam_wheel.so		group=root use_uid
+auth		requisite	pam_wheel.so		use_uid
 
 # Allow to use `please` without password (by members of group root)
-#auth		sufficient	pam_wheel.so		group=root trust use_uid
+#auth		sufficient	pam_wheel.so		trust use_uid
 
 auth		include		common-auth
 account		include		common-account

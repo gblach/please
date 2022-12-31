@@ -26,29 +26,35 @@ Run a root shell:
     $ please -
 
 
-Installation on Debian
-----------------------
-1. Install git, compiler and libpam-dev: __apt-get install git build-essential libpam0g-dev__
-2. Clone repository: __git clone https://github.com/gblach/please.git__
-3. Build and install: __make && make install__
-4. Install (and edit) pam rules: __cp pam.d/please.Debian /etc/pam.d/please__
-
-
-Installation on Fedora / CentOS
+Installation on Debian / Ubuntu
 -------------------------------
-1. Install git, compiler and pam-devel: __dnf install git gcc pam-devel__
-2. Clone repository: __git clone https://github.com/gblach/please.git__
-3. Build and install: __make && make install__
-4. Install (and edit) pam rules: __cp pam.d/please.Fedora /etc/pam.d/please__
+```
+apt-get install git build-essential libpam0g-dev
+git clone https://github.com/gblach/please.git
+cd please/
+make && make install
+cp pam.d/please.Debian /etc/pam.d/please
+```
 
+Installation on Fedora / CentOS / Alma / Rocky
+----------------------------------------------
+```
+dnf install git gcc pam-devel
+git clone https://github.com/gblach/please.git
+cd please/
+make && make install
+cp pam.d/please.Fedora /etc/pam.d/please
+```
 
 Installation on openSUSE
 ------------------------
-1. Install git, compiler and pam-devel: __zypper install git gcc make pam-devel__
-2. Clone repository: __git clone https://github.com/gblach/please.git__
-3. Build and install: __make && make install__
-4. Install (and edit) pam rules: __cp pam.d/please.openSUSE /etc/pam.d/please__
-
+```
+zypper install git gcc make pam-devel
+git clone https://github.com/gblach/please.git
+cd please/
+make && make install
+cp pam.d/please.openSUSE /etc/pam.d/please
+```
 
 Installation on FreeBSD / DragonFly
 -----------------------------------
@@ -59,15 +65,21 @@ pkg install please
 ```
 
 ### From source
-1. Install git: __pkg install git__ or __make install clean -C /usr/ports/devel/git__
-2. Clone repository: __git clone https://github.com/gblach/please.git__
-3. Build and install: __make && make install__
-4. Install (and edit) pam rules: __cp pam.d/please.BSD /usr/local/etc/pam.d/please__
-
+```
+make install clean -C /usr/ports/devel/git
+git clone https://github.com/gblach/please.git
+cd please/
+make && make install
+mkdir -p /usr/local/etc/pam.d/
+cp pam.d/please.BSD /usr/local/etc/pam.d/please
+```
 
 Installation on NetBSD
 ----------------------
-1. Install git and ca-certificates: __pkgin install git ca-certificates__
-2. Clone repository: __git clone https://github.com/gblach/please.git__
-3. Build and install: __make && make install__
-4. Install (and edit) pam rules: __cp pam.d/please.BSD /etc/pam.d/please__
+```
+pkgin install git ca-certificates
+git clone https://github.com/gblach/please.git
+cd please/
+make && make install
+cp pam.d/please.BSD /etc/pam.d/please
+```

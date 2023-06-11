@@ -52,9 +52,6 @@ int authenticate()
     pam_err = pam_start("please", username, &pamc, &pamh);
     PAM_RETURN_ON_FAILURE;
 
-    pam_err = pam_set_item(pamh, PAM_USER, "root");
-    PAM_RETURN_ON_FAILURE;
-
     pam_err = pam_set_item(pamh, PAM_RUSER, username);
     PAM_RETURN_ON_FAILURE;
 
